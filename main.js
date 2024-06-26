@@ -12,6 +12,7 @@ const divide = function(n, i) {
   return n / i;
 }
 
+
 const num1 = parseInt(prompt("please select a number"));
 const operator = prompt("please select an operator");
 const num2 = parseInt(prompt("please select the second number"));
