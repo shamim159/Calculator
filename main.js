@@ -1,3 +1,4 @@
+//calculator functions
 const add = function(n, i) {
   return n+i;
 };
@@ -11,4 +12,7 @@ const divide = function(n, i) {
   return n / i;
 }
 
-console.log(divide(6,2))
+const getInputOne = prompt("please select a number");
+const operator = prompt("please select an operator");
+const getInputTwo = prompt("please select the second number");
+
