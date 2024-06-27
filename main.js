@@ -13,9 +13,9 @@ const divide = function(n, i) {
 }
 
 
-const num1 = parseInt(prompt("please select a number"));
-const operator = prompt("please select an operator");
-const num2 = parseInt(prompt("please select the second number"));
+//const num1 = parseInt(prompt("please select a number"));
+//const operator = prompt("please select an operator");
+//const num2 = parseInt(prompt("please select the second number"));
 
 if (operator == "+"){
   console.log(add(num1, num2))
