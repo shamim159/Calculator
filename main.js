@@ -1,67 +1,98 @@
-let displayValue = '';
-let operator = '';
-let num1 = '';
-let num2 = '';
-//calculator functions
-const add = function(n, i) {
-  return n+i;
-};
-const subtract = function(n, i) {
-	return n-i
-};
-const multiply = function(n, i) {
-  return  n * i;
-};
-const divide = function(n, i) {
-  return n / i;
-}
-
-
 //const num1 = parseInt(prompt("please select a number"));
 //const operator = prompt("please select an operator");
 //const num2 = parseInt(prompt("please select the second number"));
 
 //operator functions
-function operate(operator, num1, num2) {
-if (operator == "+"){
-  console.log(add(num1, num2))
-}else if(operator =="-"){
-  console.log(subtract(num1, num2))
-}else if(operator == "*"){
-  console.log(multiply(num1, num2))
-}else if(operator == "/"){
-  console.log(divide(num1, num2))
-}
+const operate = (n1, operator, n2) => {
+  let result = '';
+  if (operator === 'add') {
+    result = parseFloat(n1) + parseFloat(n2)
+  } else if (operator === 'subtract') {
+    result = parseFloat(n1) - parseFloat(n2)
+  } else if (operator === 'multiply') {
+    result = parseFloat(n1) * parseFloat(n2)
+  } else if (operator === 'divide') {
+    result = parseFloat(n1) / parseFloat(n2)
+  };
+
+  return result;
 };
 
-//update display function
-const output = document.querySelector(".output");
-function updateOutput() {
-  output.value = displayValue;
+const calculator = document.querySelector('.container');
+const output = document.getElementById("output");
+const keys = document.querySelector(".keypad");
+
+keys.addEventListener('click', e => { 
+  if (e.target.matches('button')) {
+    const key = e.target;
+    const action = key.dataset.action;
+    const keyContent = key.textContent;
+    const displayedNum = output.textContent;
+    const previousKeyType = calculator.dataset.previousKeyType;
+  
+  Array.from(key.parentNode.children)
+        .forEach(k => k.classList.remove('is-depressed'))
+
+    if (!action) {
+      if (displayedNum === '0' || previousKeyType === 'operator' ) {
+        output.textContent = keyContent;
+      } else {
+        output.textContent = displayedNum + keyContent;
+      }
+    }
+
+    if (action === 'decimal') {
+    output.textContent = displayedNum + '.'
+    }
+  
+    if (
+      action === 'add' ||
+      action === 'subtract' ||
+      action === 'multiply' ||
+      action === 'divide'
+    ) {
+    key.classList.add('is-depressed');
+    calculator.dataset.previousKeyType = 'operator';
+    calculator.dataset.firstValue = displayedNum;
+    calculator.dataset.operator = action;
+     }
+
+  if (action === 'calculate') {
+    const firstValue = calculator.dataset.firstValue;
+    const operator = calculator.dataset.operator;
+    const secondValue = displayedNum;
+    
+    output.textContent = operate(firstValue, operator, secondValue);
+  }
+
+  if (action === 'clear') {
+    output.textContent = "";
+  }
+
 }
+});
 
-function appendToDisplay(value) {
-  output.innerHTML += value
-}
-
-
-
-
-//number buttons with event listeners
-document.getElementById("num-button-1").addEventListener('click', () => appendToDisplay('1'));
-document.getElementById("num-button-2").addEventListener('click', () => appendToDisplay('2'));
-document.getElementById("num-button-3").addEventListener('click', () => appendToDisplay('3'));
-document.getElementById("num-button-4").addEventListener('click', () => appendToDisplay('4'));
-document.getElementById("num-button-5").addEventListener('click', () => appendToDisplay('5'));
-document.getElementById("num-button-6").addEventListener('click', () => appendToDisplay('6'));
-document.getElementById("num-button-7").addEventListener('click', () => appendToDisplay('7'));
-document.getElementById("num-button-8").addEventListener('click', () => appendToDisplay('8'));
-document.getElementById("num-button-9").addEventListener('click', () => appendToDisplay('9'));
-document.getElementById("num-button-0").addEventListener('click', () => appendToDisplay('0'));
-
-//operator buttons
-document.getElementById('+').addEventListener('click', () => appendToDisplay('+'));
-document.getElementById('-').addEventListener('click', () => appendToDisplay('-'));
-document.getElementById('x').addEventListener('click', () => appendToDisplay('*'));
-document.getElementById('/').addEventListener('click', () => appendToDisplay('/'));
+//console keypresses
+keys.addEventListener('click', e => {
+  const key = e.target;
+  const action = key.dataset.action;
+  if (e.target.matches('button')) {
+    if (!action) {
+      console.log('number key!');
+    } else if (
+      action === 'add' ||
+      action === 'subtract' ||
+      action === 'multiply' ||
+      action === 'divide'
+    ) {
+      console.log('operator key!');
+    }else if (action === 'decimal') {
+      console.log('decimal key!');
+    }else if ( action === 'clear') {
+      console.log('clear key!')
+    }else if (action === 'calculate') {
+      console.log('calculate key!')
+    }
+  }
+ });
 
